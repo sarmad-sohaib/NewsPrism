@@ -1,13 +1,30 @@
 package com.sarmad.newsprism
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.sarmad.newsprism.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.sarmad.newsprism.databinding.ActivityNewsBinding
 
-class MainActivity : AppCompatActivity() {
-    
+
+class NewsActivity : AppCompatActivity() {
+
+    private lateinit var mBinding: ActivityNewsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        mBinding = ActivityNewsBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
+
+        setupBottomNavigation()
+    }
+
+    private fun setupBottomNavigation() {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(mBinding.fragContainerView.id) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        mBinding.bottomNavBar
+            .setupWithNavController(navController)
     }
 }
