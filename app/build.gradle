@@ -1,16 +1,18 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
     namespace 'com.sarmad.newsprism'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.sarmad.newsprism"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -38,6 +40,11 @@ android {
 dependencies {
 
     def nav_version = "2.5.2"
+    def retrofit_version = "2.9.0"
+    def gson_converter_factory_version = "2.3.0"
+    def room_version = "2.4.3"
+    def hilt_version = "2.44"
+    def glide_version = "4.14.2"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
@@ -50,4 +57,27 @@ dependencies {
     //navigation components
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    //retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$gson_converter_factory_version"
+
+    //logging interceptor
+    implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
+
+    //room
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    //hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    //Glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+}
+kapt {
+    correctErrorTypes = true
 }
