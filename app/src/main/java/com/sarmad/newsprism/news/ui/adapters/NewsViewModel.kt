@@ -1,5 +1,6 @@
 package com.sarmad.newsprism.news.ui.adapters
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sarmad.newsprism.data.entities.Article
@@ -8,6 +9,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+const val TAG = "NewsViewModel"
 
 sealed class NewsListUiState {
     data class Success(val newsList: List<Article>): NewsListUiState()

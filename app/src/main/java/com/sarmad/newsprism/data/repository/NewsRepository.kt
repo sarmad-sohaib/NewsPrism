@@ -8,6 +8,6 @@ interface NewsRepository {
     suspend fun getBreakingNewsStream(countryCode: String, pageNumber: Int):
             Flow<NewsResponse>
 
-    suspend fun getSearchedNewsStream(countryCode: String, pageNumber: Int):
+    suspend fun getSearchedNewsStream(searchQuery: String, pageNumber: Int):
             Flow<NewsResponse>
 }

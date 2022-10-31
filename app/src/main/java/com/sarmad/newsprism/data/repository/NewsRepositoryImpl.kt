@@ -19,10 +19,10 @@ class NewsRepositoryImpl @Inject constructor() : NewsRepository {
     }
 
     override suspend fun getSearchedNewsStream(
-        countryCode: String,
+        searchQuery: String,
         pageNumber: Int
     ): Flow<NewsResponse> = flow {
-        val searchedNewsResponse = RetrofitInstance.api.getBreakingNews(countryCode, pageNumber)
+        val searchedNewsResponse = RetrofitInstance.api.searchNews(searchQuery, pageNumber)
 
         if (searchedNewsResponse.isSuccessful) searchedNewsResponse.body()?.let { emit(it) }
         else emptyFlow<NewsResponse>()
