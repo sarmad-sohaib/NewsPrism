@@ -14,6 +14,7 @@ import com.sarmad.newsprism.data.entities.Article
 import com.sarmad.newsprism.data.entities.NewsResponse
 import com.sarmad.newsprism.data.entities.Source
 import com.sarmad.newsprism.databinding.FragmentNewsBinding
+import com.sarmad.newsprism.news.ui.adapters.ArticleClickListener
 import com.sarmad.newsprism.news.ui.adapters.NewsListAdapter
 import com.sarmad.newsprism.news.ui.adapters.NewsListUiState
 import com.sarmad.newsprism.news.ui.adapters.NewsViewModel
@@ -23,11 +24,13 @@ import kotlinx.coroutines.launch
 
 //https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg
 
+const val TAG = "NewsFragment"
+
 @AndroidEntryPoint
-class NewsFragment : Fragment() {
+class NewsFragment : Fragment(), ArticleClickListener {
 
     private lateinit var mBinding: FragmentNewsBinding
-    private val mNewsListAdapter = NewsListAdapter()
+    private val mNewsListAdapter = NewsListAdapter(this)
     private val mViewModel: NewsViewModel by viewModels()
 
     override fun onCreateView(
@@ -80,5 +83,9 @@ class NewsFragment : Fragment() {
 
     private fun newsListErrorState() {
         TODO("Not yet implemented")
+    }
+
+    override fun onArticleClick(article: Article) {
+        Log.i(TAG, "onArticleClick: ${article.source}")
     }
 }

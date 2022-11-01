@@ -8,20 +8,21 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.sarmad.newsprism.data.entities.Article
 import com.sarmad.newsprism.databinding.ItemArticlePreviewBinding
 
 
-class NewsListAdapter :
+class NewsListAdapter (
+    val articleClickListener: ArticleClickListener
+        ) :
     ListAdapter<Article, NewsListAdapter.ArticleViewHolder>(ArticleDiffCallBack()) {
 
     inner class ArticleViewHolder(private val binding: ItemArticlePreviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(article: Article) {
+        fun bind(article: Article, articleClickListener: ArticleClickListener) {
 
             val requestBuilder: RequestBuilder<Drawable> =
                 Glide.with(binding.root.context)
@@ -36,6 +37,11 @@ class NewsListAdapter :
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imageViewArticleImage)
                 textViewArticleTitle.text = article.title
+                textViewArticlePublishedTime.text = article.publishedAt
+            }
+
+            binding.root.setOnClickListener {
+                articleClickListener.onArticleClick(article)
             }
         }
     }
@@ -52,7 +58,7 @@ class NewsListAdapter :
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val article = getItem(position)
-        holder.bind(article)
+        holder.bind(article, articleClickListener)
     }
 
     private class ArticleDiffCallBack : DiffUtil.ItemCallback<Article>() {
@@ -61,4 +67,8 @@ class NewsListAdapter :
         override fun areContentsTheSame(oldItem: Article, newItem: Article) = oldItem == newItem
 
     }
+}
+
+interface ArticleClickListener {
+    fun onArticleClick(article: Article)
 }

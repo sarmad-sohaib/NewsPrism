@@ -14,6 +14,29 @@
         android:textSize="11sp"
         tools:text="Source Name" />
 
+    <View
+        android:id="@+id/view_solidCircle"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_alignTop="@+id/textView_articleSource"
+        android:layout_alignBottom="@+id/textView_articleSource"
+        android:layout_toEndOf="@id/textView_articleSource"
+        android:background="@drawable/circuler_view"
+        android:backgroundTint="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/textView_articlePublishedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/view_solidCircle"
+        tools:text="today"
+        android:layout_marginTop="8dp"
+        android:textSize="11dp"/>
+
     <TextView
         android:id="@+id/textView_articleTitle"
         android:layout_width="wrap_content"
