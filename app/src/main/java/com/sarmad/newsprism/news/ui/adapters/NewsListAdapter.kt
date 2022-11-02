@@ -29,8 +29,7 @@ class NewsListAdapter (
                     .asDrawable().sizeMultiplier(0.05f)
 
             binding.apply {
-                textViewArticleSource.text = article.source.name
-                imageViewArticleImage.layout(0, 0, 0, 0)
+                textViewArticleSource.text = (article.source?.name ?: imageViewArticleImage.layout(0, 0, 0, 0)) as CharSequence?
                 Glide.with(binding.root.context).load(article.urlToImage)
                     .thumbnail(requestBuilder)
                     .apply(RequestOptions().centerCrop().override(1200, 600))

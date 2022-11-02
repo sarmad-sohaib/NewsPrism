@@ -1,7 +1,9 @@
 package com.sarmad.newsprism.di
 
 import android.content.Context
+import androidx.fragment.app.Fragment
 import androidx.room.Room
+import com.sarmad.newsprism.article.ui.ArticleFragment
 import com.sarmad.newsprism.data.localdatasource.ArticleDao
 import com.sarmad.newsprism.data.localdatasource.ArticleDatabase
 import com.sarmad.newsprism.data.repository.NewsRepository
@@ -32,4 +34,8 @@ class NewsModule {
     @Provides
     fun providesNewsRepository(newsRepositoryImpl: NewsRepositoryImpl ) :
             NewsRepository = newsRepositoryImpl
+
+    @Provides
+    fun providesArticleFragment(fragment: ArticleFragment) =
+        fragment as Fragment
 }
