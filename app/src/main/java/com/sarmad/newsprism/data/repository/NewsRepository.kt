@@ -10,4 +10,5 @@ interface NewsRepository {
 
     suspend fun getSearchedNewsStream(searchQuery: String, pageNumber: Int):
             Flow<NewsResponse>
+
 }
