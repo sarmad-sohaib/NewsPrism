@@ -7,16 +7,20 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.sarmad.newsprism.data.entities.Article
 import com.sarmad.newsprism.databinding.FragmentNewsBinding
-import com.sarmad.newsprism.news.ui.adapters.*
+import com.sarmad.newsprism.news.ui.adapters.ArticleClickListener
+import com.sarmad.newsprism.news.ui.adapters.NewsListAdapter
+import com.sarmad.newsprism.news.ui.adapters.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
-//https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg
 
 const val TAG = "NewsFragment"
 
@@ -39,28 +43,26 @@ class NewsFragment : Fragment(), ArticleClickListener {
             recyclerViewArticlesList.layoutManager = LinearLayoutManager(context)
         }
 
-        //collecting ui states from viewModel
         lifecycleScope.launch {
-            lifecycleScope.launchWhenStarted {
-                mViewModel.newsListUiState.collect { state ->
-                    when (state) {
-                        is NewsListUiState.Error -> newsListErrorState()
-                        NewsListUiState.Loading -> newsListLoadingState()
-                        is NewsListUiState.Success -> newsListSuccessState(state.newsList)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mViewModel.newsFlow.collect { uiState ->
+
+                    if (uiState.isLoading) {
+                        newsListLoadingState()
+                    }
+
+                    if (!uiState.isLoading) newsListSuccessState(uiState.news)
+
+                    uiState.userMessage?.let {
+                        newsListErrorState()
+                        Snackbar.make(requireView(), uiState.userMessage, Snackbar.LENGTH_LONG)
+                            .show()
+
+                        mViewModel.userMessageShown()
                     }
                 }
             }
         }
-
-
-        lifecycleScope.launchWhenStarted {
-            mViewModel.uiEvent.collect { event ->
-                when (event) {
-                    is NewsListUiEvents.NavigateToArticleWebView -> navigateToArticleWebView(event.article)
-                }
-            }
-        }
-
         // Inflate the layout for this fragment
         return mBinding.root
     }
@@ -70,14 +72,13 @@ class NewsFragment : Fragment(), ArticleClickListener {
         findNavController().navigate(action)
     }
 
-    private fun newsListSuccessState(newsList: List<Article>) {
+    private fun newsListSuccessState(news: PagingData<Article>) {
         mBinding.apply {
             recyclerViewArticlesList.isVisible = true
             progressBarLoadingNews.isVisible = false
             textViewErrorLoadingNews.isVisible = false
 
-            mNewsListAdapter.submitList(newsList)
-            recyclerViewArticlesList.adapter = mNewsListAdapter
+            mNewsListAdapter.submitData(lifecycle, news)
         }
     }
 
@@ -90,10 +91,14 @@ class NewsFragment : Fragment(), ArticleClickListener {
     }
 
     private fun newsListErrorState() {
-        TODO("Not yet implemented")
+        mBinding.apply {
+            progressBarLoadingNews.isVisible = false
+            textViewErrorLoadingNews.isVisible = false
+            recyclerViewArticlesList.isVisible = false
+        }
     }
 
     override fun onArticleClick(article: Article) {
-        mViewModel.articleClicked(article)
+        navigateToArticleWebView(article = article)
     }
 }

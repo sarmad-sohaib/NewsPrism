@@ -5,14 +5,15 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.sarmad.newsprism.data.entities.Article
+import com.sarmad.newsprism.data.entities.ArticleRemoteKey
 
 @Database(
-    entities = [Article::class],
-    version = 1
+    entities = [Article::class, ArticleRemoteKey::class],
+    version = 11
 )
-
 @TypeConverters(Converters::class)
 abstract class ArticleDatabase: RoomDatabase() {
 
     abstract fun articleDao(): ArticleDao
+    abstract fun articleRemoteKeyDao(): RemoteKeysDao
 }
