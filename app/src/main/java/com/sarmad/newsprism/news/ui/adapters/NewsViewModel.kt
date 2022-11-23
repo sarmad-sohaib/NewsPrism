@@ -2,26 +2,26 @@ package com.sarmad.newsprism.news.ui.adapters
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.sarmad.newsprism.data.entities.Article
 import com.sarmad.newsprism.data.repository.NewsRepository
+import com.sarmad.newsprism.utils.Constants.Companion.US_COUNTRY_CODE
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 const val TAG = "NewsViewModel"
 
-sealed class NewsListUiState {
-    data class Success(val newsList: List<Article>): NewsListUiState()
-    data class Error(val error: String): NewsListUiState()
-    object Loading: NewsListUiState()
-}
-
-sealed class NewsListUiEvents {
-    data class NavigateToArticleWebView(val article: Article): NewsListUiEvents()
-}
+data class NewsItemListUiState(
+    val news: PagingData<Article> = PagingData.empty(),
+    val isLoading: Boolean = false,
+    val userMessage: String? = null
+)
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
@@ -29,25 +29,30 @@ class NewsViewModel @Inject constructor(
 ) : ViewModel() {
 
     init {
-        getAllNews("us")
+        getNewsStream(US_COUNTRY_CODE)
     }
 
-    private val _newsListUiState = MutableStateFlow<NewsListUiState>(NewsListUiState.Loading)
-    val newsListUiState = _newsListUiState
-    private val _uiEvent = Channel<NewsListUiEvents>()
-    val uiEvent = _uiEvent.receiveAsFlow()
+    private val _newsFlow = MutableStateFlow(NewsItemListUiState(isLoading = true))
+    val newsFlow = _newsFlow.asStateFlow()
 
-    private fun getAllNews(countryCode: String) = viewModelScope.launch {
-        newsRepository.getBreakingNewsStream(countryCode, 1).collect { newsResponse ->
-            if (newsResponse.articles.isEmpty()) {
-                _newsListUiState.value = NewsListUiState.Error("Error")
-            }
-            else _newsListUiState.value = NewsListUiState.Success(newsResponse.articles)
+    fun userMessageShown() {
+        _newsFlow.update { currentState ->
+            currentState.copy(
+                userMessage = null
+            )
         }
     }
 
-    fun articleClicked(article: Article) = viewModelScope.launch {
-        _uiEvent.send(NewsListUiEvents.NavigateToArticleWebView(article))
+    private fun getNewsStream(countryCode: String) = viewModelScope.launch {
+        newsRepository.getBreakingNewsStream(countryCode).cachedIn(viewModelScope).collectLatest {
+            _newsFlow.update { currentState ->
+                currentState.copy(
+                    isLoading = false,
+                    userMessage = null,
+                    news = it
+                )
+            }
+        }
     }
 
 }

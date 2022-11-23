@@ -2,7 +2,7 @@ package com.sarmad.newsprism.data
 
 sealed class Result<out R> {
     data class Success<out T>(val data: T?): Result<T>()
-    data class Error(val exception: java.lang.Exception): Result<Nothing>()
+    data class Error(val exception: String): Result<Nothing>()
 
     override fun toString(): String {
         return when (this) {

@@ -3,6 +3,7 @@ package com.sarmad.newsprism.news.ui.adapters
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,9 +16,9 @@ import com.sarmad.newsprism.databinding.ItemArticlePreviewBinding
 
 
 class NewsListAdapter (
-    val articleClickListener: ArticleClickListener
+    private val articleClickListener: ArticleClickListener
         ) :
-    ListAdapter<Article, NewsListAdapter.ArticleViewHolder>(ArticleDiffCallBack()) {
+    PagingDataAdapter<Article, NewsListAdapter.ArticleViewHolder>(ArticleDiffCallBack()) {
 
     inner class ArticleViewHolder(private val binding: ItemArticlePreviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -57,7 +58,9 @@ class NewsListAdapter (
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val article = getItem(position)
-        holder.bind(article, articleClickListener)
+        if (article != null) {
+            holder.bind(article, articleClickListener)
+        }
     }
 
     private class ArticleDiffCallBack : DiffUtil.ItemCallback<Article>() {

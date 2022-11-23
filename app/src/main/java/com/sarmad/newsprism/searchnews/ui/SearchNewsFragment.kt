@@ -99,8 +99,6 @@ class SearchNewsFragment : Fragment(), ArticleClickListener {
             progressBarLoadingSearchedNews.isVisible = false
             recyclerViewSearchedArticlesList.isVisible = true
 
-            mAdapter.submitList(searchedNewsList)
-
             recyclerViewSearchedArticlesList.adapter = mAdapter
         }
     }
