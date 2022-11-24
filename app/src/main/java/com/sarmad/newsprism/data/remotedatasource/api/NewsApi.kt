@@ -1,4 +1,4 @@
-package com.sarmad.newsprism.data.api
+package com.sarmad.newsprism.data.remotedatasource.api
 
 import com.sarmad.newsprism.data.entities.NewsResponse
 import com.sarmad.newsprism.utils.Constants.Companion.API_KEY

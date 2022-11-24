@@ -1,4 +1,4 @@
-package com.sarmad.newsprism.news.ui.adapters
+package com.sarmad.newsprism.news.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,8 +14,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-const val TAG = "NewsViewModel"
 
 data class NewsItemListUiState(
     val news: PagingData<Article> = PagingData.empty(),

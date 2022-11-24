@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.room.Room
 import com.sarmad.newsprism.article.ui.ArticleFragment
-import com.sarmad.newsprism.data.api.NewsApi
+import com.sarmad.newsprism.data.remotedatasource.api.NewsApi
 import com.sarmad.newsprism.data.localdatasource.ArticleDao
 import com.sarmad.newsprism.data.localdatasource.ArticleDatabase
 import com.sarmad.newsprism.data.localdatasource.RemoteKeysDao

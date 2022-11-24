@@ -18,7 +18,6 @@ import com.sarmad.newsprism.data.entities.Article
 import com.sarmad.newsprism.databinding.FragmentNewsBinding
 import com.sarmad.newsprism.news.ui.adapters.ArticleClickListener
 import com.sarmad.newsprism.news.ui.adapters.NewsListAdapter
-import com.sarmad.newsprism.news.ui.adapters.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

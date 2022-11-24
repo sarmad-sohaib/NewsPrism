@@ -8,6 +8,7 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sarmad.newsprism.R
@@ -88,7 +89,7 @@ class SearchNewsFragment : Fragment(), ArticleClickListener {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 TODO("Not yet implemented")
             }
-        })
+        }, viewLifecycleOwner, Lifecycle.State.STARTED)
 
         // Inflate the layout for this fragment
         return mBinding.root

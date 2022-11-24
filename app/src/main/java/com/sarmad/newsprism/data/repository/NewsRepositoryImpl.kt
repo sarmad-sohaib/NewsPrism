@@ -4,7 +4,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.sarmad.newsprism.data.api.NewsApi
+import com.sarmad.newsprism.data.remotedatasource.api.NewsApi
 import com.sarmad.newsprism.data.entities.Article
 import com.sarmad.newsprism.data.entities.NewsResponse
 import com.sarmad.newsprism.data.localdatasource.ArticleDao
