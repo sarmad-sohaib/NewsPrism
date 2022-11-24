@@ -18,4 +18,7 @@ interface RemoteKeysDao {
 
     @Query("DELETE FROM $REMOTE_KEYS_TABLE_NAME")
     suspend fun deleteAllArticleRemoteKeys()
+
+    @Query("SELECT modifiedAt FROM $REMOTE_KEYS_TABLE_NAME ORDER BY id DESC LIMIT 1")
+    suspend fun getLastUpdateTime(): Long?
 }

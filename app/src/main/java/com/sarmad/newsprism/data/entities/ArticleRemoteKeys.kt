@@ -11,5 +11,6 @@ data class ArticleRemoteKey(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
     val nextPage: Int?,
-    val prevPage: Int?
+    val prevPage: Int?,
+    val modifiedAt: Long?
         )

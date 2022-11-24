@@ -9,7 +9,7 @@ import com.sarmad.newsprism.data.entities.ArticleRemoteKey
 
 @Database(
     entities = [Article::class, ArticleRemoteKey::class],
-    version = 11
+    version = 14
 )
 @TypeConverters(Converters::class)
 abstract class ArticleDatabase: RoomDatabase() {

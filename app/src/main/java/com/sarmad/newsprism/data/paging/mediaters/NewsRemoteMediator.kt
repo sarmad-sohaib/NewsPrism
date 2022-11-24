@@ -11,6 +11,7 @@ import com.sarmad.newsprism.data.entities.ArticleRemoteKey
 import com.sarmad.newsprism.data.localdatasource.ArticleDao
 import com.sarmad.newsprism.data.localdatasource.ArticleDatabase
 import com.sarmad.newsprism.data.localdatasource.RemoteKeysDao
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.ceil
 
@@ -21,6 +22,20 @@ class NewsRemoteMediator @Inject constructor(
     private val remoteKeysDao: RemoteKeysDao,
     private val api: NewsApi
 ) : RemoteMediator<Int, Article>() {
+
+    override suspend fun initialize(): InitializeAction {
+        val newsCacheTimeout = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
+        val isSkipRefresh = remoteKeysDao.getLastUpdateTime()?.let {
+            System.currentTimeMillis() - it >= newsCacheTimeout
+        }
+
+        return if (isSkipRefresh == true) {
+            InitializeAction.SKIP_INITIAL_REFRESH
+        } else {
+            InitializeAction.LAUNCH_INITIAL_REFRESH
+        }
+    }
+
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, Article>
@@ -73,7 +88,8 @@ class NewsRemoteMediator @Inject constructor(
                         ArticleRemoteKey(
                             id = key.toInt(),
                             nextPage = nextPage,
-                            prevPage = prevPage
+                            prevPage = prevPage,
+                            modifiedAt = System.currentTimeMillis()
                         )
                     }
                     remoteKeysDao.insertArticleRemoteKeys(mappedKeysToArticles)
