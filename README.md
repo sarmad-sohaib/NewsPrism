@@ -8,7 +8,7 @@ In this repository, you will find:
 - A presentation layer which contains one View (fragments and activities) and Corresponding ```ViewModel``` per screen.
 - Reactive UIs built using [Flow](https://developer.android.com/kotlin/flow) and [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) for async operatinos.
 - A data layer consist of two data sources, remote ([Retrofit](https://square.github.io/retrofit)) and local (Room) which are working collaboratively due to [paging 3](https://developer.android.com/topic/libraries/architecture/paging/v3-migration#benefits) ```RemoteMediatar``` to implement cache for loaded news, and paging to reduce api calls and increase app's performance. Read more about [Remote Mediator](https://developer.android.com/topic/libraries/architecture/paging/v3-network-db).
-- Dependency injectio using [Hilt](https://developer.android.com/training/dependency-injection/hilt-android).
+- Dependency injection using [Hilt](https://developer.android.com/training/dependency-injection/hilt-android).
 
 ## Why this app?
 
