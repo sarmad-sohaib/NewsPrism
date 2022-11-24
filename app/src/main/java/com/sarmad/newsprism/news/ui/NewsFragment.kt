@@ -63,6 +63,10 @@ class NewsFragment : Fragment(), ArticleClickListener {
                 }
             }
         }
+
+        mBinding.swipeRefreshLayout.setOnRefreshListener {
+            mNewsListAdapter.refresh()
+        }
         // Inflate the layout for this fragment
         return mBinding.root
     }
@@ -79,6 +83,7 @@ class NewsFragment : Fragment(), ArticleClickListener {
             textViewErrorLoadingNews.isVisible = false
 
             mNewsListAdapter.submitData(lifecycle, news)
+            swipeRefreshLayout.isRefreshing = false
         }
     }
 
